@@ -10,10 +10,20 @@ const upload = multer({ dest: 'uploads/' });
 app.use('/images', express.static(path.join(__dirname, 'custom-folder')));
 
 // API endpoint to serve the image file
-app.get('/get-image', (req, res) => {
-    const imagePath = path.join(__dirname, 'custom-folder', 'IMG_7672.JPG');
-    console.log('Get Image');
-    res.sendFile(imagePath);
+app.get('/get-image/:imageName', (req, res) => {
+    const imageName = req.params.imageName;
+    const imagePath = path.join(__dirname, 'custom-folder', imageName);
+    
+    // Check if the image file exists
+    if (fs.existsSync(imagePath)) {
+        // If the image file exists, send it as a response
+        const imageData = fs.readFileSync(imagePath);
+        res.contentType('image/jpeg'); // Set the appropriate content type based on the image type
+        res.send(imageData);
+    } else {
+        // If the image file does not exist, send a 404 Not Found response
+        res.status(404).send('Image not found');
+    }
 });
 
 app.post('/upload', upload.single('image'), (req, res) => {

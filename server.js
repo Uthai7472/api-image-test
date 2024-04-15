@@ -22,7 +22,7 @@ app.post('/upload', upload.single('image'), (req, res) => {
   // Return the URL or file path of the uploaded image
 
   const uploadedFilePath = req.file.path;
-  const imageUrl = `http://localhost:3001/${uploadedFilePath}`;
+  const imageUrl = `https://api-image-test.onrender.com/${uploadedFilePath}`;
 
   // Create the destination directory if it doesn't exist
   const destinationDir = path.join(__dirname, 'custom-folder');

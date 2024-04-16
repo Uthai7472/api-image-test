@@ -2,9 +2,12 @@ const express = require('express');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const cors = require('cors');
 
 const app = express();
 const upload = multer({ dest: 'uploads/' });
+
+app.use(cors());
 
 // Serve the files in the 'custom-folder' directory
 app.use('/images', express.static(path.join(__dirname, 'custom-folder')));
@@ -32,7 +35,7 @@ app.post('/upload', upload.single('image'), (req, res) => {
   // Return the URL or file path of the uploaded image
 
   const uploadedFilePath = req.file.path;
-  const imageUrl = `https://api-image-test.onrender.com/${uploadedFilePath}`;
+  const imageUrl = `http://localhost:3001/${uploadedFilePath}`;
 
   // Create the destination directory if it doesn't exist
   const destinationDir = path.join(__dirname, 'custom-folder');
